@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "generatedAt": "2026-11-17T23:19:58.898Z",
+  "items": [
+    {
+      "id": "6e4c7f18-ab88-407e-83fc-0a1a2222aeed",
+      "title": "Dry Cold - 3D enviroment",
+      "description": "I created this 3D environment in Blender for use in film projects. It's inspired by a post-apocalyptic image with a cold atmosphere and blue tones, perfect for content related to snowy landscapes.",
+      "filename": "Dry Cold-Animation.mp4",
+      "type": "video",
+      "width": 1920,
+      "height": 1080,
+      "createdAt": 1794957554545,
+      "file": "media/6e4c7f18-ab88-407e-83fc-0a1a2222aeed.mp4"
+    },
+    {
+      "id": "c6af0953-8320-4d31-924c-3ad1ea7cc83e",
+      "title": "Base 71",
+      "description": "A 3D structural model with a dark atmosphere, perfect for science fiction cinematics.",
+      "filename": "Base 31-enviroment art.mp4",
+      "type": "video",
+      "width": 1920,
+      "height": 1080,
+      "createdAt": 1794957524811,
+      "file": "media/c6af0953-8320-4d31-924c-3ad1ea7cc83e.mp4"
+    },
+    {
+      "id": "a4348c82-13fd-49e5-a66d-4ecff6800b38",
+      "title": "The gray wolf - voxel model",
+      "description": "I modeled and animated this voxel model in Blender, from creating the voxels to shaping them, to rigging and animation.",
+      "filename": "SaveVid.Net_AQMherOo_JqbKjCMXOQ8AVWZwapTZtoMyZ8rtk9VyrZ-A4bqm8yvNKHbLLO83XG2AcygnIAXW_HeanJscderdw7Cg_9M73EG9iCFC3s.mp4",
+      "type": "video",
+      "width": 720,
+      "height": 720,
+      "createdAt": 1794957484498,
+      "file": "media/a4348c82-13fd-49e5-a66d-4ecff6800b38.mp4"
+    },
+    {
+      "id": "483b0cfd-fda8-4954-aa7c-6c947d15fb45",
+      "title": "Abstract ocean",
+      "description": "A render of a representation showing what it would be like if existence were designed to be perfectly bad, but in space, near the walls, a light strong enough to change the paradigm and turn that darkness into light originated.",
+      "filename": "Oceano abstracto-enviroment art.png",
+      "type": "image",
+      "width": 1920,
+      "height": 1080,
+      "createdAt": 1794957442669,
+      "file": "media/483b0cfd-fda8-4954-aa7c-6c947d15fb45.png"
+    },
+    {
+      "id": "845f87a2-b252-47e3-a1e0-c816fe555553",
+      "title": "Little Fury",
+      "description": "Another character joining my dark universe arrives in a stylized form.",
+      "filename": "SaveVid.Net_AQMakRaEVFZxDJNGZWVeamrt9oubRYCuU19C8UaanqIv8W9-ZS90Dw_tH7bWx-PTxm3JCfIL5eJubtJJ8jSdS4foFjqnv6zS5pqefHc.mp4",
+      "type": "video",
+      "width": 720,
+      "height": 720,
+      "createdAt": 1794957383396,
+      "file": "media/845f87a2-b252-47e3-a1e0-c816fe555553.mp4"
+    },
+    {
+      "id": "270d3dda-994b-4c22-8175-7e35aa2718f4",
+      "title": "Ocean corridor",
+      "description": "A 3D structural liminal space representing a corridor in the ocean, with warm tones.",
+      "filename": "Corredor en el oceano-render.png",
+      "type": "image",
+      "width": 1080,
+      "height": 1920,
+      "createdAt": 1794957341656,
+      "file": "media/270d3dda-994b-4c22-8175-7e35aa2718f4.png"
+    },
+    {
+      "id": "5fc1eecf-00a6-4ba0-9037-8d811af9428c",
+      "title": "Escalators - liminal space",
+      "description": "I modeled this liminal space in Blender, from the room to the escalators.",
+      "filename": "Station-liminal space abstract-render.png",
+      "type": "image",
+      "width": 1920,
+      "height": 1080,
+      "createdAt": 1794957260978,
+      "file": "media/5fc1eecf-00a6-4ba0-9037-8d811af9428c.png"
+    },
+    {
+      "id": "a8f239db-1b9f-47f8-a5ca-aaa7fed1181b",
+      "title": "The infinite building",
+      "description": "A 3D space that I modeled and animated for one of my short films.",
+      "filename": "SaveVid.Net_AQP7EcbRCZlouhICAInp0NsHOBayi3nBAbqppJGnKoVCxR0ZeKeULSJCZSQv7a0h1TLLsPbanZ2CRcoEOI8wHjNTKBfpxSkGez-eJMg.mp4",
+      "type": "video",
+      "width": 1280,
+      "height": 720,
+      "createdAt": 1794957187444,
+      "file": "media/a8f239db-1b9f-47f8-a5ca-aaa7fed1181b.mp4"
+    },
+    {
+      "id": "3a838998-273e-407b-8abe-cd2fe34da33e",
+      "title": "A realistic animation of a giant spider.",
+      "description": "I modeled and animated this scene with the hope of one day making a full short film out of it.",
+      "filename": "Giant spider in room-animation.mp4",
+      "type": "video",
+      "width": 1920,
+      "height": 1080,
+      "createdAt": 1794957081725,
+      "file": "media/3a838998-273e-407b-8abe-cd2fe34da33e.mp4"
+    }
+  ]
+}
