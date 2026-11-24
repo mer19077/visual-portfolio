@@ -1,0 +1,1137 @@
+<!doctype html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0b0d">
+  <meta name="author" content="Lumenith Studios">
+  <meta name="description" content="These are some of my 3D works that I have done in Blender (2026).">
+  <title>Lumenith Studios Portfolio</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0b0d;
+      --surface: #111114;
+      --surface-2: #17171b;
+      --surface-3: #202025;
+      --line: rgba(255,255,255,.09);
+      --line-strong: rgba(255,255,255,.15);
+      --text: #f1f0ed;
+      --muted: #96959c;
+      --muted-2: #6f6e76;
+      --accent: #d9d2c4;
+      --radius: 16px;
+      --ease: cubic-bezier(.2,.75,.25,1);
+    }
+    * { box-sizing: border-box; }
+    html { min-width: 320px; background: var(--bg); scroll-behavior: smooth; }
+    body {
+      margin: 0; min-height: 100vh;
+      background: radial-gradient(ellipse at 50% -25%, rgba(130,120,105,.09), transparent 48%), var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, input, textarea { font: inherit; }
+    button { color: inherit; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid rgba(226,218,204,.8); outline-offset: 3px; }
+    .shell { width: min(1480px, calc(100% - 76px)); margin: 0 auto; }
+
+    .topbar { height: 78px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+    .brand-mark { width: 29px; height: 29px; border: 1px solid rgba(235,229,217,.65); border-radius: 50%; display: grid; place-items: center; position: relative; }
+    .brand-mark::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 15px rgba(226,218,204,.55); }
+    .brand-name { font-size: 11px; font-weight: 650; letter-spacing: .2em; white-space: nowrap; }
+    .brand-sub { margin-left: 5px; padding-left: 14px; border-left: 1px solid var(--line-strong); color: var(--muted); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
+    .top-actions { display: flex; align-items: center; gap: 12px; }
+    .editor-tools { display: flex; align-items: center; gap: 10px; }
+    .button { min-height: 41px; padding: 0 15px; border: 1px solid var(--line-strong); border-radius: 999px; background: transparent; color: var(--text); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 9px; font-size: 11px; letter-spacing: .045em; transition: background .2s ease, border-color .2s ease, transform .2s ease; }
+    .button:hover { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.3); }
+    .button:active { transform: scale(.98); }
+    .button:disabled { opacity: .55; cursor: progress; }
+    .button--primary { background: var(--accent); color: #171614; border-color: var(--accent); font-weight: 650; }
+    .button--primary:hover { background: #eee7d9; border-color: #eee7d9; }
+    .button--subtle { border-color: transparent; color: var(--muted); }
+    .button svg { width: 15px; height: 15px; flex: none; }
+
+    .intro { padding: 71px 0 35px; display: flex; align-items: end; justify-content: space-between; gap: 28px; }
+    .eyebrow { margin: 0 0 15px; color: var(--muted); text-transform: uppercase; letter-spacing: .22em; font-size: 9px; }
+    h1 { max-width: 720px; margin: 0; font-size: clamp(37px, 5.7vw, 70px); line-height: .99; letter-spacing: -.065em; font-weight: 430; }
+    .intro-note { max-width: 245px; margin: 0 0 5px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+    .collection-head { min-height: 54px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--line); color: var(--muted); }
+    .collection-label { font-size: 9px; letter-spacing: .2em; text-transform: uppercase; }
+    .collection-count { font-size: 10px; letter-spacing: .09em; font-variant-numeric: tabular-nums; }
+
+    .portfolio-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 8px; gap: 15px; padding: 15px 0 70px; align-items: stretch; }
+    .tile { position: relative; display: block; width: 100%; height: 100%; min-width: 0; min-height: 0; padding: 0; overflow: hidden; border: 1px solid rgba(255,255,255,.07); border-radius: 5px; background: #17171a; cursor: zoom-in; text-align: left; isolation: isolate; transition: border-color .35s ease, transform .45s var(--ease), box-shadow .4s ease; }
+    .tile:hover { z-index: 2; transform: translateY(-3px); border-color: rgba(255,255,255,.25); box-shadow: 0 18px 42px rgba(0,0,0,.28); }
+    .tile-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; background: #17171a; transition: transform .8s var(--ease), opacity .3s ease; }
+    .media-error-label { position: absolute; z-index: 3; inset: 0; display: grid; place-items: center; padding: 18px; color: #c9a7a7; background: #17171a; font-size: 9px; letter-spacing: .08em; line-height: 1.6; text-align: center; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .tile-media.media-failed { visibility: hidden; }
+    .tile:hover .tile-media { transform: scale(1.035); }
+    .tile::after { content: ""; position: absolute; inset: 30% 0 0; z-index: 1; background: linear-gradient(transparent, rgba(0,0,0,.72)); opacity: .78; transition: opacity .3s ease; pointer-events: none; }
+    .tile:hover::after { opacity: 1; }
+    .tile-meta { position: absolute; z-index: 2; left: 16px; right: 15px; bottom: 15px; display: flex; justify-content: space-between; align-items: end; gap: 10px; pointer-events: none; }
+    .tile-title { color: white; font-size: 12px; line-height: 1.35; font-weight: 530; text-shadow: 0 1px 10px rgba(0,0,0,.45); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .tile-kind { flex: none; color: rgba(255,255,255,.72); font-size: 8px; letter-spacing: .16em; text-transform: uppercase; }
+    .video-mark { position: absolute; z-index: 2; top: 14px; right: 14px; width: 29px; height: 29px; display: grid; place-items: center; border-radius: 50%; background: rgba(0,0,0,.38); border: 1px solid rgba(255,255,255,.3); backdrop-filter: blur(8px); pointer-events: none; }
+    .video-mark svg { width: 11px; height: 11px; fill: white; margin-left: 2px; }
+
+    .empty-state { min-height: 360px; margin: 16px 0 75px; border: 1px dashed rgba(255,255,255,.16); border-radius: 8px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px 20px; }
+    .empty-icon { width: 49px; height: 49px; display: grid; place-items: center; border: 1px solid var(--line-strong); border-radius: 50%; color: #c9c3b7; margin-bottom: 20px; }
+    .empty-icon svg { width: 20px; height: 20px; }
+    .empty-state h2 { margin: 0 0 9px; font-size: 19px; font-weight: 450; letter-spacing: -.03em; }
+    .empty-state p { max-width: 380px; margin: 0 0 20px; color: var(--muted); font-size: 12px; line-height: 1.7; }
+    .footer { padding: 23px 0 30px; display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid var(--line); color: var(--muted-2); font-size: 9px; letter-spacing: .12em; text-transform: uppercase; }
+    .footer #footerCredit { color: var(--muted); }
+
+    .lightbox { position: fixed; z-index: 50; inset: 0; display: none; place-items: center; padding: 30px; background: rgba(0,0,0,.82); backdrop-filter: blur(13px); }
+    .lightbox.is-open { display: grid; }
+    .lightbox-dialog { width: min(1450px, 100%); height: min(850px, 91vh); min-height: 420px; display: grid; grid-template-columns: minmax(0, 1fr) 340px; overflow: hidden; background: #101013; border: 1px solid rgba(255,255,255,.13); border-radius: 9px; box-shadow: 0 30px 100px rgba(0,0,0,.6); animation: enter .32s var(--ease) both; }
+    @keyframes enter { from { opacity: 0; transform: translateY(10px) scale(.99); } to { opacity: 1; transform: none; } }
+    .viewer-stage { position: relative; min-width: 0; min-height: 0; display: grid; place-items: center; padding: 52px 58px; background: #080809; }
+    .viewer-stage img, .viewer-stage video { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+    .viewer-stage video { width: 100%; height: 100%; }
+    .viewer-close { position: absolute; top: 17px; left: 18px; width: 35px; height: 35px; border: 1px solid rgba(255,255,255,.16); border-radius: 50%; background: rgba(255,255,255,.05); display: grid; place-items: center; cursor: pointer; color: white; }
+    .viewer-close:hover, .viewer-nav:hover { background: rgba(255,255,255,.13); }
+    .viewer-close svg { width: 15px; height: 15px; }
+    .viewer-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 37px; height: 37px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.16); border-radius: 50%; background: rgba(255,255,255,.05); color: white; cursor: pointer; }
+    .viewer-nav svg { width: 16px; height: 16px; }
+    .viewer-prev { left: 15px; }
+    .viewer-next { right: 15px; }
+    .viewer-counter { position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,.55); font-size: 9px; letter-spacing: .16em; font-variant-numeric: tabular-nums; }
+
+    .details-panel { min-width: 0; display: flex; flex-direction: column; padding: 29px 25px 22px; border-left: 1px solid var(--line); background: #111114; }
+    .details-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 54px; }
+    .details-kicker { color: var(--muted); font-size: 9px; text-transform: uppercase; letter-spacing: .2em; }
+    .details-type { color: var(--muted-2); font-size: 8px; letter-spacing: .14em; text-transform: uppercase; }
+    .field-label { display: block; color: var(--muted); font-size: 9px; letter-spacing: .16em; text-transform: uppercase; margin: 0 0 12px; }
+    .title-input { width: 100%; padding: 0 0 17px; border: 0; border-bottom: 1px solid var(--line-strong); border-radius: 0; outline: 0; background: transparent; color: var(--text); font-size: 25px; line-height: 1.2; letter-spacing: -.045em; }
+    .title-input:focus { border-bottom-color: rgba(255,255,255,.58); outline: none; }
+    .description-wrap { margin-top: 31px; }
+    .description-input { width: 100%; min-height: 150px; resize: vertical; padding: 0; border: 0; outline: 0; background: transparent; color: #c4c2c5; font-size: 12px; line-height: 1.8; }
+    .description-input::placeholder, .title-input::placeholder { color: #626168; }
+    .description-input:focus { outline: none; }
+    .field-help { margin-top: 12px; color: var(--muted-2); font-size: 9px; line-height: 1.6; }
+    .details-bottom { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--line); }
+    .save-line { min-height: 25px; color: var(--muted-2); font-size: 9px; display: flex; align-items: center; gap: 7px; }
+    .save-dot { width: 5px; height: 5px; border-radius: 50%; background: #8f9e8d; box-shadow: 0 0 9px rgba(143,158,141,.45); }
+    .details-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 17px; }
+    .delete-button { padding: 6px 0; border: 0; background: transparent; color: #a77f7f; font-size: 10px; cursor: pointer; }
+    .delete-button:hover { color: #e5a6a6; }
+    .file-name { margin-top: 15px; color: var(--muted-2); font-size: 9px; line-height: 1.5; overflow-wrap: anywhere; }
+    .readonly-note { margin-top: 13px; color: var(--muted-2); font-size: 9px; line-height: 1.6; }
+
+    .settings-modal { position: fixed; z-index: 70; inset: 0; display: none; place-items: center; padding: 24px; background: rgba(0,0,0,.7); backdrop-filter: blur(10px); }
+    .settings-modal.is-open { display: grid; }
+    .settings-dialog { width: min(480px, 100%); background: #131316; border: 1px solid var(--line-strong); border-radius: 12px; padding: 26px; box-shadow: 0 30px 80px rgba(0,0,0,.6); animation: enter .25s var(--ease) both; }
+    .settings-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+    .settings-head h3 { margin: 0; font-size: 15px; font-weight: 550; letter-spacing: -.01em; }
+    .settings-close { width: 30px; height: 30px; border: 1px solid var(--line-strong); border-radius: 50%; background: transparent; color: var(--text); cursor: pointer; display: grid; place-items: center; }
+    .settings-close:hover { background: rgba(255,255,255,.08); }
+    .settings-close svg { width: 14px; height: 14px; }
+    .settings-field { margin-bottom: 18px; }
+    .settings-field label { display: block; color: var(--muted); font-size: 9px; letter-spacing: .16em; text-transform: uppercase; margin-bottom: 8px; }
+    .settings-field input, .settings-field textarea { width: 100%; padding: 11px 12px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--surface-2); color: var(--text); font-size: 13px; outline: none; transition: border-color .2s ease; }
+    .settings-field input:focus, .settings-field textarea:focus { border-color: rgba(255,255,255,.5); }
+    .settings-field textarea { min-height: 90px; resize: vertical; line-height: 1.5; }
+    .settings-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+
+    .toast { position: fixed; z-index: 80; left: 50%; bottom: 26px; transform: translate(-50%, 12px); opacity: 0; pointer-events: none; padding: 12px 17px; border-radius: 999px; background: #e6dfd2; color: #171614; font-size: 11px; box-shadow: 0 12px 38px rgba(0,0,0,.3); transition: opacity .25s ease, transform .25s ease; }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .loading-note { color: var(--muted); font-size: 12px; padding: 60px 0; text-align: center; }
+    .hidden { display: none !important; }
+
+    @media (max-width: 1100px) {
+      .portfolio-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .lightbox-dialog { grid-template-columns: minmax(0, 1fr) 310px; }
+      .details-panel { padding-left: 21px; padding-right: 21px; }
+    }
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 38px, 620px); }
+      .topbar { height: 66px; }
+      .brand-sub { display: none; }
+      .brand-name { font-size: 10px; }
+      .top-actions { gap: 7px; }
+      .editor-tools { gap: 6px; }
+      .button { min-height: 38px; padding: 0 11px; font-size: 10px; }
+      .button .button-text { display: none; }
+      .intro { padding: 56px 0 29px; display: block; }
+      h1 { max-width: 540px; font-size: clamp(43px, 10vw, 62px); }
+      .intro-note { max-width: 370px; margin-top: 20px; }
+      .portfolio-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding-top: 10px; }
+      .tile-meta { left: 10px; right: 10px; bottom: 10px; }
+      .tile-title { font-size: 10px; }
+      .tile-kind { font-size: 7px; }
+      .lightbox { padding: 0; }
+      .lightbox-dialog { width: 100%; height: 100dvh; min-height: 0; border: 0; border-radius: 0; grid-template-columns: 1fr; grid-template-rows: minmax(270px, 55dvh) auto; overflow-y: auto; }
+      .viewer-stage { padding: 48px 42px; }
+      .viewer-stage img, .viewer-stage video { max-height: 100%; }
+      .viewer-nav { width: 32px; height: 32px; }
+      .viewer-prev { left: 7px; }
+      .viewer-next { right: 7px; }
+      .viewer-counter { bottom: 11px; }
+      .viewer-close { top: 10px; left: 10px; }
+      .details-panel { padding: 22px 22px 25px; border-left: 0; border-top: 1px solid var(--line); min-height: 340px; }
+      .details-top { margin-bottom: 28px; }
+      .description-input { min-height: 85px; }
+      .footer { font-size: 8px; flex-direction: column; gap: 8px; }
+    }
+    @media (max-width: 390px) {
+      .shell { width: calc(100% - 28px); }
+      .brand-mark { width: 25px; height: 25px; }
+      .brand-name { letter-spacing: .14em; }
+      .top-actions .button { padding: 0 9px; }
+      h1 { font-size: 41px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script></head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand" aria-label="Visual Archive">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-name">VISUAL ARCHIVE</span>
+        <span class="brand-sub">by Lumenith Studios</span>
+      </div>
+      <div class="top-actions">
+        <div class="editor-tools hidden" id="editorTools">
+          <button class="button button--subtle" id="settingsButton" type="button" title="Site settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span class="button-text">Site settings</span>
+          </button>
+          <button class="button button--subtle" id="exportButton" type="button" title="Export public site" disabled="">Encoding 9/9…</button>
+          <button class="button button--primary" id="importButton" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0L8 8m4-4 4 4"></path><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"></path></svg>
+            <span id="importButtonText">Import files</span>
+          </button>
+          <input id="fileInput" type="file" accept="image/*,video/*" multiple="" hidden="">
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div>
+          <p class="eyebrow" id="eyebrow">Independent archive · 2026</p>
+          <h1 id="mainTitle">Lumenith Studios Portfolio</h1>
+        </div>
+        <p class="intro-note" id="introNote">These are some of my 3D works that I have done in Blender (2026).</p>
+      </section>
+
+      <div class="collection-head">
+        <span class="collection-label" id="collectionLabel">Selection / 001</span>
+        <span class="collection-count" id="itemCount">09 WORKS</span>
+      </div>
+
+      <div id="loadingNote" class="loading-note">Loading collection…</div>
+      <section id="portfolioGrid" class="portfolio-grid" aria-label="Image and video portfolio"></section>
+      <section id="emptyState" class="empty-state hidden">
+        <div class="empty-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><path d="m21 15-5-5L5 21"></path></svg></div>
+        <h2 id="emptyTitle">Your creative space starts here.</h2>
+        <p id="emptyText">Import photos or videos from your device. Every piece has its own details panel for a title and description.</p>
+        <button class="button button--primary" id="emptyImportButton" type="button">Import your first work</button>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span id="footerCopyright">© 2026 Lumenith Studios Portfolio. All rights reserved.</span>
+      <span id="footerCredit">Created by Lumenith Studios</span>
+    </footer>
+  </div>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="Work details">
+      <div class="viewer-stage" id="viewerStage">
+        <button class="viewer-close" id="closeViewer" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="m18 6-12 12M6 6l12 12"></path></svg>
+        </button>
+        <button class="viewer-nav viewer-prev" id="prevItem" type="button" aria-label="Previous work">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+        </button>
+        <div id="viewerMedia" style="display:contents"></div>
+        <button class="viewer-nav viewer-next" id="nextItem" type="button" aria-label="Next work">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+        </button>
+        <span class="viewer-counter" id="viewerCounter">01 / 01</span>
+      </div>
+      <aside class="details-panel">
+        <div class="details-top">
+          <span class="details-kicker" id="detailsKicker">Work details</span>
+          <span class="details-type" id="detailsType">Image</span>
+        </div>
+        <div>
+          <label class="field-label" id="titleLabel" for="titleInput">Title</label>
+          <input class="title-input" id="titleInput" type="text" maxlength="120" placeholder="Work title" autocomplete="off">
+        </div>
+        <div class="description-wrap">
+          <label class="field-label" id="descriptionLabel" for="descriptionInput">Description</label>
+          <textarea class="description-input" id="descriptionInput" maxlength="2500" placeholder="Write a description for this piece…"></textarea>
+          <div class="field-help" id="fieldHelp">Changes are saved automatically in this browser.</div>
+        </div>
+        <div class="details-bottom">
+          <div class="save-line" id="saveLine"><span class="save-dot"></span><span id="saveText">Saved</span></div>
+          
+          <div class="file-name" id="fileName"></div>
+          <div class="readonly-note hidden" id="readonlyNote">Read-only details · This is a published collection.</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="settings-modal" id="settingsModal" aria-hidden="true">
+    <div class="settings-dialog" role="dialog" aria-modal="true" aria-labelledby="settingsTitleText">
+      <div class="settings-head">
+        <h3 id="settingsTitleText">Site settings</h3>
+        <button class="settings-close" id="closeSettings" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="m18 6-12 12M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div class="settings-field">
+        <label id="siteTitleLabel" for="siteTitleInput">Site title</label>
+        <input id="siteTitleInput" type="text" maxlength="120" placeholder="e.g. Lumenith — Selected Works" autocomplete="off">
+      </div>
+      <div class="settings-field">
+        <label id="siteDescriptionLabel" for="siteDescriptionInput">Site description</label>
+        <textarea id="siteDescriptionInput" maxlength="500" placeholder="A short introduction shown at the top of the site."></textarea>
+      </div>
+      <div class="settings-actions">
+        <button class="button button--primary" id="saveSettings" type="button">Save changes</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    /* =================================================================
+       The exported public build embeds everything here:
+       - PUBLISHED_BUILD = true
+       - EMBEDDED_PORTFOLIO = { items: [{ file: "data:image/jpeg;base64,..." }] }
+       - EMBEDDED_SITE = { title, description }
+       Result: index.html works by double-click, no server, no GitHub Pages.
+       ================================================================= */
+    const PUBLISHED_BUILD = false;
+    const EMBEDDED_PORTFOLIO = null;
+    const EMBEDDED_SITE = null;
+
+    const DB_NAME = 'visual-archive-portfolio';
+    const DB_VERSION = 2;
+    const SETTINGS_STORE = 'settings';
+    const SITE_STORAGE_KEY = 'visual-archive-site-settings';
+    const SITE_KEY = 'site';
+
+    const STRINGS = {
+      documentTitle: 'Visual Archive — Portfolio',
+      metaDescription: 'A visual portfolio for images and videos.',
+      brandSub: 'by Lumenith Studios',
+      importFiles: 'Import files',
+      exportSite: 'Export site',
+      exportTitle: 'Export public site',
+      siteSettings: 'Site settings',
+      siteSettingsTitle: 'Site settings',
+      siteTitleLabel: 'Site title',
+      siteTitlePlaceholder: 'e.g. Lumenith — Selected Works',
+      siteDescriptionLabel: 'Site description',
+      siteDescriptionPlaceholder: 'A short introduction shown at the top of the site.',
+      saveSettings: 'Save changes',
+      settingsSaved: 'Site settings saved.',
+      eyebrow: 'Independent archive · 2026',
+      mainTitle: 'Works that speak<br>for themselves.',
+      publishedMainTitle: 'A collection in motion.',
+      publishedIntro: 'A selection of images and motion. Explore each piece and discover its story.',
+      publishedEyebrow: 'Portfolio · Visual selection',
+      introNote: 'A curated selection of images and motion, brought together in a space to explore each piece at your own pace.',
+      collectionLabel: 'Selection / 001',
+      portfolioLabel: 'Image and video portfolio',
+      loading: 'Loading collection…',
+      emptyTitle: 'Your creative space starts here.',
+      emptyText: 'Import photos or videos from your device. Every piece has its own details panel for a title and description.',
+      importFirst: 'Import your first work',
+      dialogLabel: 'Work details',
+      close: 'Close',
+      previous: 'Previous work',
+      next: 'Next work',
+      detailsKicker: 'Work details',
+      titleLabel: 'Title',
+      titlePlaceholder: 'Work title',
+      descriptionLabel: 'Description',
+      descriptionPlaceholder: 'Write a description for this piece…',
+      fieldHelp: 'Changes are saved automatically in this browser.',
+      delete: 'Delete work',
+      escape: 'ESC to close',
+      readonly: 'Read-only details · This is a published collection.',
+      saved: 'Saved',
+      saving: 'Saving…',
+      autosaved: 'Saved automatically',
+      saveFailed: 'Could not save',
+      image: 'Image',
+      video: 'Video',
+      untitled: 'Untitled work',
+      portfolioWork: 'Portfolio work',
+      countOne: 'WORK',
+      countMany: 'WORKS',
+      selectMedia: 'Select image or video files.',
+      importing: (n) => `Importing ${n} file${n === 1 ? '' : 's'}…`,
+      imported: (n) => `${n} file${n === 1 ? '' : 's'} added to your collection.`,
+      importFailed: 'Could not import the files.',
+      deleteConfirm: (name) => `Delete “${name}” from your collection? This action cannot be undone.`,
+      deleted: 'Work removed from your collection.',
+      deleteFailed: 'Could not delete the work.',
+      exportEmpty: 'Add at least one work before exporting.',
+      preparing: 'Preparing…',
+      encoding: (i, n) => `Encoding ${i}/${n}…`,
+      exportDone: 'Self-contained site exported. Just double-click index.html — no server needed.',
+      exportLarge: 'Note: the HTML is large (see size in toast). Browsers may take a moment to open it. For very large media, consider the Start-Portfolio launcher instead.',
+      exportFailed: 'Could not export the portfolio.',
+      exportVerifyFailed: 'Export verification failed. Please try again.',
+      zipLoadFailed: 'Could not load the ZIP exporter. Check your internet connection.',
+      dbOpenFailed: 'Could not open local storage.',
+      dbAbort: 'The local operation was cancelled.',
+      noPortfolioJson: 'portfolio.json was not found.',
+      publicEmptyTitle: 'The collection is empty for now.',
+      publicEmptyText: 'Works will appear here once a collection has been published.',
+      publicLoadErrorTitle: 'The collection could not be loaded.',
+      publicLoadErrorText: 'The embedded data was not found. Re-export from the editor.',
+      mediaLoadErrorShort: 'MEDIA COULD NOT BE LOADED',
+      mediaLoadErrorLong: 'This image or video could not be loaded from the embedded data. Re-export from the editor.',
+      storageUnavailable: 'Storage is restricted in this browser. The editor will run for this session only — you can still import and export. To save across sessions, use Chrome, Edge (normal window), or Firefox.',
+      originalFile: 'Original file · ',
+      loadingExporter: 'Could not start the ZIP exporter.',
+      footerCredit: 'Created by Lumenith Studios',
+      publicReadme: `VISUAL ARCHIVE — PUBLISHING GUIDE\n\nWHAT THIS ZIP CONTAINS\n- index.html: the entire portfolio, self-contained. Every image and video is embedded as a data URL, so the page works by double-clicking without a server.\n- Start-Portfolio.bat      (Windows)\n- Start-Portfolio.command  (macOS)\n- start-portfolio.sh       (Linux)\n- README.txt: this file.\n\nThe launcher scripts are optional. They start a tiny local HTTP server so you can preview the exact file over http:// instead of file://. Use them only if you prefer HTTP during development.\n\nHOW TO USE IT\nOption A — No server (recommended):\n  Double-click index.html. Everything loads because media is embedded in the HTML.\n\nOption B — With local HTTP server (optional):\n  Windows: double-click Start-Portfolio.bat\n  macOS:   double-click Start-Portfolio.command (you may need right-click > Open the first time)\n  Linux:   open a terminal here and run: bash start-portfolio.sh\nThe scripts require Python 3 or Node.js to be installed. If neither is available, fall back to Option A.\n\nPUBLISH WITHOUT GITHUB PAGES\nYou don't have to publish anywhere. The exported index.html is the portfolio. You can:\n  • Keep it on your computer and open it with a double-click.\n  • Email it or put it on a USB drive.\n  • Upload it to any static host later (GitHub Pages, Netlify, Cloudflare Pages, Neocities, etc.) — no media folder required.\n\nPUBLISH ON GITHUB PAGES (if you want a public URL)\n1. Unzip this file.\n2. Create a GitHub repository.\n3. Upload only index.html to the repository root. Do NOT upload the whole folder, do NOT create a media folder.\n4. Settings > Pages > Deploy from a branch > main > /(root). Save.\n5. Open the URL shown in Settings > Pages.\n\nABOUT FILE SIZE\nBecause media is inlined as base64, index.html is roughly 33% larger than the combined size of your source files. For a handful of photos this is fine. For many or very large videos, compress them before importing.\n\nUPDATES\nRe-export from the editor and replace index.html in your chosen host (or keep the new file locally). There is no media folder to keep in sync.\n`,
+      publicZipName: 'visual-portfolio-public.zip'
+    };
+
+    const t = (key, ...args) => {
+      const value = STRINGS[key] ?? key;
+      return typeof value === 'function' ? value(...args) : value;
+    };
+
+    const $ = (selector) => document.querySelector(selector);
+    const grid = $('#portfolioGrid');
+    const fileInput = $('#fileInput');
+    const lightbox = $('#lightbox');
+    const viewerMedia = $('#viewerMedia');
+    const titleInput = $('#titleInput');
+    const descriptionInput = $('#descriptionInput');
+
+    let siteSettings = { title: '', description: '' };
+    let saveStatusKey = 'saved';
+    let db = null;
+    let ephemeral = false;
+    let items = [];
+    let activeIndex = -1;
+    let objectUrls = new Map();
+    let saveTimer = null;
+    let toastTimer = null;
+    let resizeObserver = null;
+
+    function setSaveStatus(key) {
+      saveStatusKey = key;
+      const el = $('#saveText');
+      if (el) el.textContent = t(key);
+    }
+
+    /* ---------------- Storage ---------------- */
+    function openDatabase() {
+      return new Promise((resolve, reject) => {
+        let request;
+        try { request = indexedDB.open(DB_NAME, DB_VERSION); }
+        catch (err) { reject(err); return; }
+        request.onupgradeneeded = () => {
+          const database = request.result;
+          if (!database.objectStoreNames.contains('works')) database.createObjectStore('works', { keyPath: 'id' });
+          if (!database.objectStoreNames.contains(SETTINGS_STORE)) database.createObjectStore(SETTINGS_STORE, { keyPath: 'key' });
+        };
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error || new Error(t('dbOpenFailed')));
+        request.onblocked = () => reject(new Error(t('dbOpenFailed')));
+      });
+    }
+    function storeRequest(storeName, mode, operation, value) {
+      return new Promise((resolve, reject) => {
+        if (!db) { reject(new Error('DB not ready')); return; }
+        let tx;
+        try { tx = db.transaction(storeName, mode); } catch (err) { reject(err); return; }
+        const store = tx.objectStore(storeName);
+        const request = operation === 'getAll' ? store.getAll() : store[operation](value);
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+        tx.onabort = () => reject(tx.error || new Error(t('dbAbort')));
+      });
+    }
+    async function dbPut(item) {
+      if (ephemeral || !db) return;
+      return storeRequest('works', 'readwrite', 'put', item);
+    }
+    async function dbDelete(id) {
+      if (ephemeral || !db) return;
+      return storeRequest('works', 'readwrite', 'delete', id);
+    }
+
+    async function loadSiteSettings() {
+      try {
+        if (db) {
+          const row = await storeRequest(SETTINGS_STORE, 'readonly', 'get', SITE_KEY);
+          if (row && row.value) {
+            siteSettings.title = String(row.value.title || '');
+            siteSettings.description = String(row.value.description || '');
+            return;
+          }
+        }
+      } catch (_) {}
+      try {
+        const raw = localStorage.getItem(SITE_STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          siteSettings.title = typeof parsed.title === 'string' ? parsed.title : '';
+          siteSettings.description = typeof parsed.description === 'string' ? parsed.description : '';
+        }
+      } catch (_) {}
+    }
+
+    async function saveSiteSettings() {
+      try {
+        if (db && !ephemeral) {
+          await storeRequest(SETTINGS_STORE, 'readwrite', 'put', { key: SITE_KEY, value: siteSettings });
+        }
+      } catch (_) {}
+      try { localStorage.setItem(SITE_STORAGE_KEY, JSON.stringify(siteSettings)); } catch (_) {}
+    }
+
+    /* ---------------- UI text ---------------- */
+    function updateFooter() {
+      const year = new Date().getFullYear();
+      const name = siteSettings.title || 'Visual Archive';
+      const copyright = $('#footerCopyright');
+      if (copyright) copyright.textContent = `© ${year} ${name}. All rights reserved.`;
+      const credit = $('#footerCredit');
+      if (credit) credit.textContent = t('footerCredit');
+    }
+    function titleInputPlaceholder() {
+      titleInput.placeholder = t('titlePlaceholder');
+      descriptionInput.placeholder = t('descriptionPlaceholder');
+    }
+    function applyStaticText() {
+      document.documentElement.lang = 'en';
+      document.title = siteSettings.title || t('documentTitle');
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.content = siteSettings.description || t('metaDescription');
+
+      const text = (selector, key) => { const el = $(selector); if (el) el.textContent = t(key); };
+      text('.brand-sub', 'brandSub');
+      text('#eyebrow', PUBLISHED_BUILD ? 'publishedEyebrow' : 'eyebrow');
+      const h1 = $('#mainTitle');
+      if (h1) {
+        if (siteSettings.title) h1.textContent = siteSettings.title;
+        else h1.innerHTML = PUBLISHED_BUILD ? t('publishedMainTitle') : t('mainTitle');
+      }
+      const note = $('#introNote');
+      if (note) note.textContent = siteSettings.description || (PUBLISHED_BUILD ? t('publishedIntro') : t('introNote'));
+
+      text('#collectionLabel', 'collectionLabel');
+      text('#loadingNote', 'loading');
+      text('#emptyTitle', PUBLISHED_BUILD ? 'publicEmptyTitle' : 'emptyTitle');
+      text('#emptyText', PUBLISHED_BUILD ? 'publicEmptyText' : 'emptyText');
+      text('#emptyImportButton', 'importFirst');
+      grid.setAttribute('aria-label', t('portfolioLabel'));
+      const lbd = document.querySelector('.lightbox-dialog'); if (lbd) lbd.setAttribute('aria-label', t('dialogLabel'));
+      const cv = $('#closeViewer'); if (cv) cv.setAttribute('aria-label', t('close'));
+      const pv = $('#prevItem'); if (pv) pv.setAttribute('aria-label', t('previous'));
+      const nx = $('#nextItem'); if (nx) nx.setAttribute('aria-label', t('next'));
+      text('#detailsKicker', 'detailsKicker');
+      text('#titleLabel', 'titleLabel');
+      text('#descriptionLabel', 'descriptionLabel');
+      titleInputPlaceholder();
+      text('#fieldHelp', 'fieldHelp');
+      text('#deleteButton', 'delete');
+      text('#escapeHint', 'escape');
+      const ro = $('#readonlyNote'); if (ro) ro.textContent = t('readonly');
+      text('#importButtonText', 'importFiles');
+      const exp = $('#exportButton'); if (exp) { exp.title = t('exportTitle'); const label = exp.querySelector('.button-text'); if (label) label.textContent = t('exportSite'); }
+      const setb = $('#settingsButton');
+      if (setb) { setb.title = t('siteSettings'); const label = setb.querySelector('.button-text'); if (label) label.textContent = t('siteSettings'); }
+      text('#settingsTitleText', 'siteSettingsTitle');
+      text('#siteTitleLabel', 'siteTitleLabel');
+      text('#siteDescriptionLabel', 'siteDescriptionLabel');
+      text('#saveSettings', 'saveSettings');
+      const sti = $('#siteTitleInput'); if (sti) sti.placeholder = t('siteTitlePlaceholder');
+      const sdi = $('#siteDescriptionInput'); if (sdi) sdi.placeholder = t('siteDescriptionPlaceholder');
+
+      updateFooter();
+      const ic = $('#itemCount'); if (ic) ic.textContent = formatCount(items.length);
+      if (activeIndex >= 0 && items[activeIndex]) {
+        const dt = $('#detailsType'); if (dt) dt.textContent = t(items[activeIndex].type);
+        const fn = $('#fileName'); if (fn) fn.textContent = items[activeIndex].filename ? `${t('originalFile')}${items[activeIndex].filename}` : '';
+      }
+      setSaveStatus(saveStatusKey);
+      if (items.length) renderPortfolio();
+    }
+
+    /* ---------------- Helpers ---------------- */
+    function showToast(message) {
+      const toast = $('#toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 3800);
+    }
+    function niceName(filename) {
+      return filename.replace(/\.[^/.]+$/, '').replace(/[_-]+/g, ' ').trim() || t('untitled');
+    }
+    function formatCount(n) {
+      return `${String(n).padStart(2, '0')} ${n === 1 ? t('countOne') : t('countMany')}`;
+    }
+    function getMediaUrl(item) {
+      if (item.published) {
+        const raw = String(item.file || '');
+        if (/^(https?:|data:|blob:)/i.test(raw)) return raw;
+        const clean = raw.replace(/\\/g, '/').replace(/^\/+/, '').replace(/^(\.\/)+/, '');
+        return `./${clean}`;
+      }
+      if (!objectUrls.has(item.id)) objectUrls.set(item.id, URL.createObjectURL(item.blob));
+      return objectUrls.get(item.id);
+    }
+    function revokeUrl(id) {
+      if (objectUrls.has(id)) { URL.revokeObjectURL(objectUrls.get(id)); objectUrls.delete(id); }
+    }
+    async function getDimensions(file) {
+      if (file.type.startsWith('image/')) {
+        try {
+          const bitmap = await createImageBitmap(file);
+          const r = { width: bitmap.width || 1, height: bitmap.height || 1 };
+          bitmap.close?.();
+          return r;
+        } catch (_) {
+          return new Promise((resolve) => {
+            const url = URL.createObjectURL(file);
+            const img = new Image();
+            img.onload = () => { resolve({ width: img.naturalWidth || 1, height: img.naturalHeight || 1 }); URL.revokeObjectURL(url); };
+            img.onerror = () => { resolve({ width: 4, height: 3 }); URL.revokeObjectURL(url); };
+            img.src = url;
+          });
+        }
+      }
+      return new Promise((resolve) => {
+        const url = URL.createObjectURL(file);
+        const video = document.createElement('video');
+        video.preload = 'metadata';
+        video.onloadedmetadata = () => { resolve({ width: video.videoWidth || 16, height: video.videoHeight || 9 }); URL.revokeObjectURL(url); };
+        video.onerror = () => { resolve({ width: 16, height: 9 }); URL.revokeObjectURL(url); };
+        video.src = url;
+      });
+    }
+    function blobToDataURL(blob) {
+      return new Promise((resolve, reject) => {
+        if (!blob || !blob.size) { reject(new Error('A media file is empty or unavailable.')); return; }
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result));
+        reader.onerror = () => reject(reader.error || new Error('Could not read media file.'));
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    /* ---------------- Import ---------------- */
+    async function importFiles(fileList) {
+      const valid = Array.from(fileList).filter(f => f.type.startsWith('image/') || f.type.startsWith('video/'));
+      if (!valid.length) { showToast(t('selectMedia')); return; }
+      const loading = $('#loadingNote');
+      loading.classList.remove('hidden');
+      loading.textContent = t('importing', valid.length);
+      let imported = 0;
+      for (const file of valid) {
+        try {
+          const dim = await getDimensions(file);
+          const item = {
+            id: (crypto.randomUUID ? crypto.randomUUID() : `work-${Date.now()}-${Math.random().toString(16).slice(2)}`),
+            blob: file,
+            filename: file.name,
+            title: niceName(file.name),
+            description: '',
+            width: dim.width,
+            height: dim.height,
+            type: file.type.startsWith('video/') ? 'video' : 'image',
+            createdAt: Date.now()
+          };
+          await dbPut(item);
+          items.push(item);
+          imported++;
+        } catch (err) { console.error('Import failed:', file.name, err); }
+      }
+      items.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      loading.classList.add('hidden');
+      renderPortfolio();
+      showToast(imported ? t('imported', imported) : t('importFailed'));
+      fileInput.value = '';
+    }
+
+    /* ---------------- Render ---------------- */
+    function renderPortfolio() {
+      grid.replaceChildren();
+      const ic = $('#itemCount'); if (ic) ic.textContent = formatCount(items.length);
+      const empty = items.length === 0;
+      $('#emptyState').classList.toggle('hidden', !empty);
+      grid.classList.toggle('hidden', empty);
+      if (empty) return;
+
+      for (const [index, item] of items.entries()) {
+        const tile = document.createElement('button');
+        tile.type = 'button';
+        tile.className = 'tile';
+        tile.setAttribute('aria-label', `Open ${item.title || item.filename || t('untitled')}`);
+        tile.dataset.index = String(index);
+        const ratio = Math.max(.22, Math.min(4.5, (item.width || 4) / (item.height || 3)));
+        tile.dataset.ratio = String(ratio);
+
+        const media = document.createElement(item.type === 'video' ? 'video' : 'img');
+        media.className = 'tile-media';
+        media.src = getMediaUrl(item);
+        media.addEventListener('error', () => {
+          media.classList.add('media-failed');
+          if (tile.querySelector('.media-error-label')) return;
+          const warn = document.createElement('span');
+          warn.className = 'media-error-label';
+          warn.textContent = `${t('mediaLoadErrorShort')}\n${item.filename || ''}`;
+          warn.title = item.filename || '';
+          tile.append(warn);
+        }, { once: true });
+        if (item.type === 'video') {
+          media.muted = true; media.loop = true; media.autoplay = true;
+          media.playsInline = true; media.preload = 'metadata';
+          media.setAttribute('aria-hidden', 'true');
+        } else {
+          media.alt = item.title || item.filename || t('portfolioWork');
+          media.loading = 'lazy'; media.decoding = 'async';
+        }
+        tile.append(media);
+
+        if (item.type === 'video') {
+          const mark = document.createElement('span');
+          mark.className = 'video-mark';
+          mark.innerHTML = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.6 10 6l-7 4.4z"/></svg>';
+          tile.append(mark);
+        }
+        const meta = document.createElement('span');
+        meta.className = 'tile-meta';
+        const name = document.createElement('span');
+        name.className = 'tile-title';
+        name.textContent = item.title || item.filename || t('untitled');
+        const kind = document.createElement('span');
+        kind.className = 'tile-kind';
+        kind.textContent = t(item.type);
+        meta.append(name, kind);
+        tile.append(meta);
+        tile.addEventListener('click', () => openViewer(index));
+        grid.append(tile);
+      }
+      requestAnimationFrame(layoutTiles);
+      if (resizeObserver) resizeObserver.disconnect();
+      resizeObserver = new ResizeObserver(() => requestAnimationFrame(layoutTiles));
+      resizeObserver.observe(grid);
+    }
+
+    function layoutTiles() {
+      if (!items.length || grid.classList.contains('hidden')) return;
+      const columns = Math.max(1, getComputedStyle(grid).gridTemplateColumns.split(' ').length);
+      const rowUnit = 8;
+      const gap = parseFloat(getComputedStyle(grid).rowGap) || 15;
+      grid.querySelectorAll('.tile').forEach((tile) => {
+        const ratio = Number(tile.dataset.ratio) || 1;
+        const width = tile.getBoundingClientRect().width;
+        if (!width) return;
+        let colSpan = ratio > 2.25 ? 3 : ratio > 1.28 ? 2 : 1;
+        colSpan = Math.min(colSpan, columns);
+        tile.style.gridColumn = `span ${colSpan}`;
+        const desired = Math.max(185, Math.min(560, width / ratio));
+        const rowSpan = Math.max(8, Math.ceil((desired + gap) / (rowUnit + gap)));
+        tile.style.gridRowEnd = `span ${rowSpan}`;
+      });
+    }
+
+    function refreshCurrentTile(index) {
+      const tile = grid.querySelector(`.tile[data-index="${index}"]`);
+      if (tile) {
+        const label = tile.querySelector('.tile-title');
+        if (label) label.textContent = items[index].title || items[index].filename || t('untitled');
+        tile.setAttribute('aria-label', `Open ${(items[index].title || items[index].filename || t('untitled'))}`);
+      }
+    }
+
+    /* ---------------- Viewer ---------------- */
+    function openViewer(index) {
+      if (!items.length) return;
+      activeIndex = (index + items.length) % items.length;
+      const item = items[activeIndex];
+      viewerMedia.replaceChildren();
+      const media = document.createElement(item.type === 'video' ? 'video' : 'img');
+      media.src = getMediaUrl(item);
+      media.addEventListener('error', () => {
+        const warn = document.createElement('div');
+        warn.className = 'media-error-label';
+        warn.textContent = t('mediaLoadErrorLong');
+        viewerMedia.replaceChildren(warn);
+      }, { once: true });
+      if (item.type === 'video') {
+        media.controls = true; media.autoplay = true; media.playsInline = true; media.preload = 'auto';
+      } else {
+        media.alt = item.title || item.filename || t('portfolioWork');
+      }
+      viewerMedia.append(media);
+      titleInput.value = item.title || '';
+      descriptionInput.value = item.description || '';
+      $('#detailsType').textContent = t(item.type);
+      $('#fileName').textContent = item.filename ? `${t('originalFile')}${item.filename}` : '';
+      $('#viewerCounter').textContent = `${String(activeIndex + 1).padStart(2, '0')} / ${String(items.length).padStart(2, '0')}`;
+      $('#prevItem').disabled = items.length < 2;
+      $('#nextItem').disabled = items.length < 2;
+      $('#prevItem').style.opacity = items.length < 2 ? '.25' : '1';
+      $('#nextItem').style.opacity = items.length < 2 ? '.25' : '1';
+      setSaveStatus('saved');
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      if (!PUBLISHED_BUILD) titleInput.focus({ preventScroll: true });
+    }
+    function closeViewer() {
+      if (saveTimer) { clearTimeout(saveTimer); saveCurrentItem(); }
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      viewerMedia.replaceChildren();
+      activeIndex = -1;
+    }
+    function navigateViewer(dir) {
+      if (activeIndex < 0 || items.length < 2) return;
+      if (saveTimer) { clearTimeout(saveTimer); saveCurrentItem(); }
+      openViewer((activeIndex + dir + items.length) % items.length);
+    }
+
+    /* ---------------- Editing ---------------- */
+    function queueSave() {
+      if (PUBLISHED_BUILD || activeIndex < 0) return;
+      setSaveStatus('saving');
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveCurrentItem, 280);
+    }
+    async function saveCurrentItem() {
+      if (PUBLISHED_BUILD || activeIndex < 0 || !items[activeIndex]) return;
+      clearTimeout(saveTimer);
+      const item = items[activeIndex];
+      item.title = titleInput.value.trim();
+      item.description = descriptionInput.value;
+      try {
+        await dbPut(item);
+        setSaveStatus('autosaved');
+        refreshCurrentTile(activeIndex);
+      } catch (err) { console.error(err); setSaveStatus('saveFailed'); }
+    }
+    async function deleteCurrentItem() {
+      if (activeIndex < 0 || PUBLISHED_BUILD) return;
+      const item = items[activeIndex];
+      if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
+      if (!confirm(t('deleteConfirm', item.title || item.filename))) return;
+      try {
+        await dbDelete(item.id);
+        revokeUrl(item.id);
+        items.splice(activeIndex, 1);
+        closeViewer();
+        renderPortfolio();
+        showToast(t('deleted'));
+      } catch (err) { console.error(err); showToast(t('deleteFailed')); }
+    }
+
+    /* ---------------- Loading ---------------- */
+    async function loadPublishedPortfolio() {
+      if (EMBEDDED_SITE) {
+        siteSettings.title = typeof EMBEDDED_SITE.title === 'string' ? EMBEDDED_SITE.title : '';
+        siteSettings.description = typeof EMBEDDED_SITE.description === 'string' ? EMBEDDED_SITE.description : '';
+      }
+      const data = EMBEDDED_PORTFOLIO;
+      items = Array.isArray(data && data.items) ? data.items.map(i => ({ ...i, published: true })) : [];
+      items.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      $('#loadingNote').classList.add('hidden');
+      $('#editorTools').classList.add('hidden');
+      $('#emptyImportButton').classList.add('hidden');
+      $('#fieldHelp').classList.add('hidden');
+      // Safety net: hide the actions block if it still exists in the DOM
+      // (the export removes it outright; this line covers any legacy HTML).
+      const actions = $('#editorDetailsActions');
+      if (actions) actions.classList.add('hidden');
+      $('#readonlyNote').classList.remove('hidden');
+      titleInput.readOnly = true;
+      descriptionInput.readOnly = true;
+      titleInput.style.cursor = 'default';
+      descriptionInput.style.cursor = 'default';
+      applyStaticText();
+      renderPortfolio();
+    }
+    async function loadEditorPortfolio() {
+      try {
+        db = await openDatabase();
+      } catch (err) {
+        console.warn('IndexedDB unavailable, running in ephemeral mode:', err);
+        ephemeral = true;
+        db = null;
+        showToast(t('storageUnavailable'));
+      }
+      if (!ephemeral) {
+        try {
+          items = await storeRequest('works', 'readonly', 'getAll');
+        } catch (err) {
+          console.warn('Could not read works, running in ephemeral mode:', err);
+          ephemeral = true;
+          items = [];
+          showToast(t('storageUnavailable'));
+        }
+      }
+      items.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+      $('#loadingNote').classList.add('hidden');
+      renderPortfolio();
+    }
+
+    /* ---------------- Export ---------------- */
+    async function loadJSZip() {
+      if (window.JSZip) return window.JSZip;
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js';
+        script.onload = () => window.JSZip ? resolve(window.JSZip) : reject(new Error(t('loadingExporter')));
+        script.onerror = () => reject(new Error(t('zipLoadFailed')));
+        document.head.append(script);
+      });
+    }
+
+    function buildLaunchers() {
+      const bat = `@echo off
+setlocal
+cd /d "%~dp0"
+echo.
+echo ============================================
+echo   Visual Archive - Local Preview
+echo ============================================
+echo.
+where python >nul 2>nul
+if %errorlevel%==0 (
+    start "" "http://localhost:8080/index.html"
+    python -m http.server 8080
+    goto :eof
+)
+where py >nul 2>nul
+if %errorlevel%==0 (
+    start "" "http://localhost:8080/index.html"
+    py -m http.server 8080
+    goto :eof
+)
+where node >nul 2>nul
+if %errorlevel%==0 (
+    start "" "http://localhost:8080/index.html"
+    npx --yes serve -l 8080 .
+    goto :eof
+)
+echo Python or Node.js was not found.
+echo.
+echo You don't need a server: just double-click index.html.
+echo The portfolio is fully self-contained.
+echo.
+pause
+`;
+      const command = `#!/bin/bash
+cd "$(dirname "$0")"
+echo "Starting Visual Archive local preview..."
+if command -v python3 >/dev/null 2>&1; then
+    (sleep 1; open "http://localhost:8080/index.html" 2>/dev/null) &
+    python3 -m http.server 8080
+elif command -v python >/dev/null 2>&1; then
+    (sleep 1; open "http://localhost:8080/index.html" 2>/dev/null) &
+    python -m http.server 8080
+else
+    echo "Python 3 not found."
+    echo "You don't need a server: just double-click index.html."
+    read -p "Press Enter to close..."
+fi
+`;
+      const sh = command.replace('open "http://localhost:8080/index.html" 2>/dev/null',
+                                 '(xdg-open "http://localhost:8080/index.html" 2>/dev/null || open "http://localhost:8080/index.html" 2>/dev/null)');
+      return { bat, command, sh };
+    }
+
+    function buildExportHtml(manifestCode, siteCode) {
+      const clone = document.documentElement.cloneNode(true);
+      const clear = (sel) => { const el = clone.querySelector(sel); if (el) el.replaceChildren(); };
+      clear('#portfolioGrid');
+      clear('#viewerMedia');
+      // Hide editor-only controls in the published build.
+      const tools = clone.querySelector('#editorTools'); if (tools) tools.classList.add('hidden');
+      // Remove the "Delete work" actions block entirely so the public
+      // portfolio can never expose it, regardless of JS timing.
+      const actions = clone.querySelector('#editorDetailsActions'); if (actions) actions.remove();
+      const lb = clone.querySelector('#lightbox'); if (lb) { lb.classList.remove('is-open'); lb.setAttribute('aria-hidden', 'true'); }
+      const sm = clone.querySelector('#settingsModal'); if (sm) { sm.classList.remove('is-open'); sm.setAttribute('aria-hidden', 'true'); }
+      const toast = clone.querySelector('#toast'); if (toast) { toast.classList.remove('show'); toast.textContent = ''; }
+      const counter = clone.querySelector('#viewerCounter'); if (counter) counter.textContent = '01 / 01';
+      const fileName = clone.querySelector('#fileName'); if (fileName) fileName.textContent = '';
+      const titleInp = clone.querySelector('#titleInput'); if (titleInp) titleInp.removeAttribute('value');
+      const descInp = clone.querySelector('#descriptionInput'); if (descInp) descInp.textContent = '';
+      const empty = clone.querySelector('#emptyState'); if (empty) empty.classList.add('hidden');
+      const loading = clone.querySelector('#loadingNote'); if (loading) loading.classList.remove('hidden');
+
+      const script = clone.querySelector('script');
+      if (!script) throw new Error('Inline script not found in clone.');
+      let src = script.textContent || '';
+      src = src.replace('const PUBLISHED_BUILD = false;', 'const PUBLISHED_BUILD = true;');
+      src = src.replace('const EMBEDDED_PORTFOLIO = null;', `const EMBEDDED_PORTFOLIO = ${manifestCode};`);
+      src = src.replace('const EMBEDDED_SITE = null;', `const EMBEDDED_SITE = ${siteCode};`);
+      script.textContent = src;
+      return '<!doctype html>\n' + clone.outerHTML;
+    }
+
+    async function exportPublicSite() {
+      if (!items.length) { showToast(t('exportEmpty')); return; }
+      const button = $('#exportButton');
+      button.disabled = true;
+      const originalHTML = button.innerHTML;
+      button.innerHTML = t('preparing');
+      try {
+        const JSZip = await loadJSZip();
+        const zip = new JSZip();
+        const publicItems = [];
+
+        for (let i = 0; i < items.length; i++) {
+          const item = items[i];
+          button.innerHTML = t('encoding', i + 1, items.length);
+          const dataURL = await blobToDataURL(item.blob);
+          if (!dataURL.startsWith('data:')) throw new Error('A media file could not be encoded as a data URL.');
+          publicItems.push({
+            id: item.id,
+            title: item.title || niceName(item.filename || t('untitled')),
+            description: item.description || '',
+            filename: item.filename || '',
+            type: item.type,
+            mimeType: item.blob?.type || '',
+            width: item.width || 4,
+            height: item.height || 3,
+            createdAt: item.createdAt || Date.now(),
+            file: dataURL
+          });
+        }
+
+        const publicData = {
+          version: 4,
+          generatedAt: new Date().toISOString(),
+          mediaCount: publicItems.length,
+          embed: 'data-url',
+          items: publicItems
+        };
+
+        const manifestCode = JSON.stringify(publicData).replace(/</g, '\\u003c');
+        const siteCode = JSON.stringify(siteSettings).replace(/</g, '\\u003c');
+        const html = buildExportHtml(manifestCode, siteCode);
+
+        if (!html.includes('const PUBLISHED_BUILD = true;') ||
+            !html.includes('const EMBEDDED_PORTFOLIO = {') ||
+            !html.includes('const EMBEDDED_SITE = {')) {
+          throw new Error(t('exportVerifyFailed'));
+        }
+
+        zip.file('index.html', html);
+        zip.file('README.txt', t('publicReadme'));
+        const launchers = buildLaunchers();
+        zip.file('Start-Portfolio.bat', launchers.bat);
+        zip.file('Start-Portfolio.command', launchers.command);
+        zip.file('start-portfolio.sh', launchers.sh);
+
+        const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 } });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url; link.download = t('publicZipName');
+        document.body.append(link); link.click(); link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 30000);
+        const sizeMB = (blob.size / (1024 * 1024)).toFixed(1);
+        showToast(`${t('exportDone')} (${sizeMB} MB)`);
+        if (blob.size > 50 * 1024 * 1024) setTimeout(() => showToast(t('exportLarge')), 3000);
+      } catch (err) {
+        console.error('Export error:', err);
+        showToast(err.message || t('exportFailed'));
+      } finally {
+        button.disabled = false;
+        button.innerHTML = originalHTML;
+      }
+    }
+
+    /* ---------------- Settings modal ---------------- */
+    function openSettings() {
+      $('#siteTitleInput').value = siteSettings.title;
+      $('#siteDescriptionInput').value = siteSettings.description;
+      $('#settingsModal').classList.add('is-open');
+      $('#settingsModal').setAttribute('aria-hidden', 'false');
+    }
+    function closeSettings() {
+      $('#settingsModal').classList.remove('is-open');
+      $('#settingsModal').setAttribute('aria-hidden', 'true');
+    }
+    async function saveSettingsAndClose() {
+      siteSettings.title = $('#siteTitleInput').value.trim();
+      siteSettings.description = $('#siteDescriptionInput').value.trim();
+      await saveSiteSettings();
+      applyStaticText();
+      showToast(t('settingsSaved'));
+      closeSettings();
+    }
+
+    /* ---------------- Wiring ---------------- */
+    $('#settingsButton').addEventListener('click', openSettings);
+    $('#closeSettings').addEventListener('click', closeSettings);
+    $('#saveSettings').addEventListener('click', saveSettingsAndClose);
+    $('#settingsModal').addEventListener('click', (e) => { if (e.target === $('#settingsModal')) closeSettings(); });
+
+    $('#importButton').addEventListener('click', () => fileInput.click());
+    $('#emptyImportButton').addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => importFiles(e.target.files));
+    $('#exportButton').addEventListener('click', exportPublicSite);
+    $('#closeViewer').addEventListener('click', closeViewer);
+    $('#prevItem').addEventListener('click', () => navigateViewer(-1));
+    $('#nextItem').addEventListener('click', () => navigateViewer(1));
+    $('#deleteButton').addEventListener('click', deleteCurrentItem);
+    titleInput.addEventListener('input', queueSave);
+    descriptionInput.addEventListener('input', queueSave);
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeViewer(); });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && $('#settingsModal').classList.contains('is-open')) { closeSettings(); return; }
+      if (!lightbox.classList.contains('is-open')) return;
+      if (event.key === 'Escape') closeViewer();
+      if (event.key === 'ArrowLeft') navigateViewer(-1);
+      if (event.key === 'ArrowRight') navigateViewer(1);
+    });
+
+    /* ---------------- Init ---------------- */
+    (async function init() {
+      try {
+        if (PUBLISHED_BUILD) {
+          await loadPublishedPortfolio();
+        } else {
+          await loadEditorPortfolio();
+          await loadSiteSettings();
+          applyStaticText();
+        }
+      } catch (err) {
+        console.error('Init error:', err);
+        $('#loadingNote').classList.add('hidden');
+        if (PUBLISHED_BUILD) {
+          $('#editorTools').classList.add('hidden');
+          $('#emptyTitle').textContent = t('publicLoadErrorTitle');
+          $('#emptyText').textContent = t('publicLoadErrorText');
+          $('#emptyImportButton').classList.add('hidden');
+          $('#emptyState').classList.remove('hidden');
+        } else {
+          showToast(t('storageUnavailable'));
+          $('#emptyState').classList.remove('hidden');
+        }
+      }
+    })();
+  </script>
+
+</body></html>
